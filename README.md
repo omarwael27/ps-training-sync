@@ -1,4 +1,4 @@
-# Codeforces private Contest data scraping 
+# Codeforces private Contest data scraping
 
 **Automated system for aggregating and managing Codeforces private contest results across multiple events**
 
