@@ -26,13 +26,13 @@ This tool is designed specifically for **private Codeforces contests** (group co
 
 **Fully automated pipeline** that:
 
-- ✅ Scrapes real-time standings from Codeforces
-- ✅ Aggregates performance across multiple contests
-- ✅ Automatically filters participants based on thresholds
-- ✅ Updates Google Sheets with zero human intervention
-- ✅ Generates comprehensive analytics reports
-- ✅ **Saves 4-5 hours per automation run**
-- ✅ **Eliminates human error completely**
+- Scrapes real-time standings from Codeforces
+- Aggregates performance across multiple contests
+- Automatically filters participants based on thresholds
+- Updates Google Sheets with zero human intervention
+- Generates comprehensive analytics reports
+- Saves 4-5 hours per automation run
+- Eliminates human error completely
 
 ---
 
@@ -131,59 +131,77 @@ COMBINED_CSV=combined_results.csv
 
 ```python
 CONTESTS = [
-    ("Contest1", "https://codeforces.com/group/.../contest/.../standings", None),
-    ("Contest2", "https://codeforces.com/group/.../contest/.../standings", 5),
+    # (name, url, individual_threshold)
+    ("Contest1", "https://...", None),  # No individual threshold
+    ("Contest2", "https://...", 5),     # Must solve 5+ problems
 ]
 ```
 
 ---
 
-## Usage
+## Project Structure
 
-### Basic Usage
-
-```bash
-python main.py
+```
+Codeforces-private-Contest-data-scraping/
+├── README.md
+├── LICENSE
+├── .env.example
+├── .gitignore
+├── requirements.txt
+├── config.py
+├── main.py
+├── Contest1_standings.csv
+├── Contest2_standings.csv
+├── combined_results.csv
+├── acm_tracker.log
+├── scraper/
+│   ├── __init__.py
+│   ├── driver.py
+│   └── codeforces.py
+├── sheets/
+│   ├── __init__.py
+│   ├── auth.py
+│   └── operations.py
+└── utils/
+    ├── __init__.py
+    └── logger.py
 ```
 
-### What Happens:
+### Directory Descriptions
 
-1. 🔍 **Scraping Phase**: Extracts participant data from all configured contests
-2. 🧹 **Filtering Phase**: Removes participants below performance thresholds
-3. 📊 **Google Sheets Update**: Automatically updates spreadsheets with filtered data
-4. 📈 **Report Generation**: Creates combined analytics CSV with aggregate results
+- `scraper/` - Web scraping functionality
 
-### Output Files:
+  - `driver.py` - WebDriver management and configuration
+  - `codeforces.py` - Codeforces scraper implementation
+
+- `sheets/` - Google Sheets integration
+
+  - `auth.py` - OAuth 2.0 authentication
+  - `operations.py` - Sheet operations (CRUD)
+
+- `utils/` - Utility modules
+  - `logger.py` - Logging configuration
+
+---
+
+## Workflow
+
+The system operates in three main phases:
+
+**Scraping Phase**: Retrieves standings from all configured Codeforces contests
+
+**Filtering Phase**: Removes participants below performance thresholds
+
+**Google Sheets Update**: Automatically updates spreadsheets with filtered data
+
+**Report Generation**: Creates combined analytics CSV with aggregate results
+
+### Output Files
 
 - `Contest1_standings.csv` - Individual contest results
 - `Contest2_standings.csv` - Individual contest results
 - `combined_results.csv` - Aggregated results across all contests
 - `acm_tracker.log` - Detailed execution log
-
----
-
-## Project Structure
-
-Codeforces-private-Contest-data-scraping/
-├── README.md # This file
-├── .env.example # Environment template
-├── .gitignore # Git ignore rules
-├── requirements.txt # Python dependencies
-├── config.py # Configuration settings
-├── main.py # Main entry point
-├── scraper/
-│ ├── **init**.py
-│ ├── driver.py # WebDriver management
-│ └── codeforces.py # Codeforces scraper
-├── sheets/
-│ ├── **init**.py
-│ ├── auth.py # Google Sheets authentication
-│ └── operations.py # Sheet operations (CRUD)
-└── utils/
-├── **init**.py
-└── logger.py # Logging configuration
-
-````
 
 ---
 
@@ -206,14 +224,14 @@ CONTESTS = [
     ("Contest1", "https://...", None),  # No individual threshold
     ("Contest2", "https://...", 5),     # Must solve 5+ problems
 ]
-````
+```
 
 ### Threshold Logic
 
-A participant is **removed** if:
+A participant is removed if:
 
-- They fail to meet **any individual contest threshold** (if set), OR
-- Their **total across all contests** < `GLOBAL_THRESHOLD`
+- They fail to meet any individual contest threshold (if set), OR
+- Their total across all contests is less than GLOBAL_THRESHOLD
 
 ---
 
@@ -231,13 +249,13 @@ These are already in `.gitignore` for your protection.
 
 ## Impact Metrics
 
-| Metric                | Before Automation | After Automation |
-| --------------------- | ----------------- | ---------------- |
-| **Time per cycle**    | 4-5 hours         | 5-10 minutes     |
-| **People required**   | 30+ mentors       | 0                |
-| **Human errors**      | Frequent          | Zero             |
-| **Data accuracy**     | ~85-90%           | 100%             |
-| **Annual time saved** | -                 | **200+ hours**   |
+| Metric            | Before Automation | After Automation |
+| ----------------- | ----------------- | ---------------- |
+| Time per cycle    | 4-5 hours         | 5-10 minutes     |
+| People required   | 30+ mentors       | 0                |
+| Human errors      | Frequent          | Zero             |
+| Data accuracy     | ~85-90%           | 100%             |
+| Annual time saved | -                 | 200+ hours       |
 
 ---
 
@@ -247,20 +265,19 @@ These are already in `.gitignore` for your protection.
 
 **1. "Cloudflare blocked access"**
 
-- Solution: The scraper waits 15 seconds for Cloudflare challenges
-- If persistent, increase `CLOUDFLARE_WAIT` in `config.py`
+Solution: The scraper waits 15 seconds for Cloudflare challenges. If persistent, increase `CLOUDFLARE_WAIT` in `config.py`.
 
 **2. "credentials.json not found"**
 
-- Solution: Download OAuth credentials from Google Cloud Console
+Solution: Download OAuth credentials from Google Cloud Console.
 
 **3. "SPREADSHEET_ID not set"**
 
-- Solution: Add your Google Sheets ID to `.env` file
+Solution: Add your Google Sheets ID to `.env` file.
 
 **4. Rate limiting**
 
-- Solution: Random delays are built in; adjust delays in `config.py`
+Solution: Random delays are built in; adjust delays in `config.py`.
 
 ---
 
@@ -294,19 +311,15 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-- Built for **acmASCIS Student Chapter** at Ain Shams University
+- Built for acmASCIS Student Chapter at Ain Shams University
 - Saves countless hours on data aggregation
 
 ---
 
 ## Tech Stack
 
-- **Python 3.13** - Core language
-- **Selenium + undetected-chromedriver** - Web scraping
-- **pandas** - Data processing
-- **Google Sheets API** - Spreadsheet automation
-- **OAuth 2.0** - Secure authentication
-
----
-
-**⭐ If this project helped you, please give it a star!**
+- Python 3.13 - Core language
+- Selenium + undetected-chromedriver - Web scraping
+- pandas - Data processing
+- Google Sheets API - Spreadsheet automation
+- OAuth 2.0 - Secure authentication
