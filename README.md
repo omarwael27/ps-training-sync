@@ -286,9 +286,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Omar Wael Mohamed**
 
-- GitHub: [@omarwael227](https://github.com/omarwael227)
-- LinkedIn: [omar-wael](https://linkedin.com/in/omar-wael-b30a86364/)
-- Email: owael2204@gmail.com
+- GitHub: [@omarwael27](https://github.com/omarwael27)
+- LinkedIn: [omar wael](https://linkedin.com/in/omar-wael-b30a86364/)
+- Email: owael2207@gmail.com
 
 ---
 
